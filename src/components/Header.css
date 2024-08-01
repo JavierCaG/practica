@@ -1,0 +1,56 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+  background-color: #333;
+  color: #fff;
+  height: 60px;
+  overflow: hidden;
+}
+
+.izquierda {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.icono {
+  width: 40px;
+  height: 40px;
+}
+
+.titulo {
+  font-size: 2rem;
+  color: #fff;
+  text-decoration: none;
+}
+
+.header-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 2;
+}
+
+.nav-link {
+  margin: 0 1rem;
+  color: var(--main-text-color);
+  text-decoration: none;
+  font-size: 1.2rem;
+  transition: transform var(--card-transition);
+}
+
+.nav-link:hover {
+  transform: scale(var(--card-hover-scale));
+  text-decoration: underline;
+  color: var(--accent-color);
+}
+
+.derecha {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  position: relative;
+  justify-content: flex-end;
+}

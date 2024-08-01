@@ -1,0 +1,78 @@
+body.no-scroll {
+  overflow: hidden;
+}
+
+.carousel-track {
+  display: flex;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  padding: 20px 0;
+}
+
+.popular {
+  position: absolute;
+  top: 5px;
+  left: 15px;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: 4px 6px;
+  margin: 0;
+  border-radius: 50px;
+  font-size: 1.8rem;
+  z-index: 1;
+}
+
+.carousel-card {
+  position: relative;
+  width: 150px;
+  height: 425px;
+  transition: transform var(--card-transition), width var(--card-transition), height var(--card-transition), z-index var(--card-transition);
+  cursor: pointer;
+  margin: 0 5px;
+}
+
+.carousel-card img {
+  height: 425px;
+  object-fit: contain;
+}
+
+.carousel-card:hover {
+  transform: scale(var(--card-hover-scale));
+  z-index: 2;
+}
+
+.card-title {
+  display: none;
+}
+
+.carousel-card:hover .card-title {
+  width: 100%;
+  display: block;
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  color: white;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 3px;
+}
+
+.carousel-button {
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  color: white;
+  font-size: var(--icon-size);
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+}
+
+.carousel-button.prev {
+  left: 0;
+}
+
+.carousel-button.next {
+  right: 0;
+}
