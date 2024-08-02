@@ -1,5 +1,6 @@
+//Importamos useMemo para memorizar los resultados de las funciones para evitar calculos costosos
 import React, { useState, useEffect, useMemo } from "react";
-import { fetchGenres } from "../api";
+import { obtenerGeneros } from "../api";
 import "./Modal.css";
 
 const Modal = ({
@@ -13,31 +14,47 @@ const Modal = ({
   genreIds,
   type,
 }) => {
-  const [genres, setGenres] = useState([]);
+  const [generos, setGeneros] = useState([]);
 
   useEffect(() => {
-    const fetchGenreData = async () => {
-      const genreData = await fetchGenres(
+    //Cuando se carga o cuando type cambia este se ejecuta llamando a obtener generos y actualizando al tipo correcto (movies, tv)
+    const cargarDatosGenero = async () => {
+      const datosGenero = await obtenerGeneros(
         type === "peliculas" ? "movie" : "tv"
       );
-      setGenres(genreData);
+      setGeneros(datosGenero);
     };
 
-    fetchGenreData();
+    cargarDatosGenero();
   }, [type]);
 
-  const getGenreNames = (ids) => {
+  useEffect(() => {
+    //Esto se utiliza para evitar que se pueda mover la pagina cuando hay un modal activo y que se reactive el movimiento al cerrarla
+    if (show) {
+      document.body.classList.add("no-scroll");
+    } else {
+      document.body.classList.remove("no-scroll");
+    }
+
+    return () => {
+      document.body.classList.remove("no-scroll");
+    };
+  }, [show]);
+
+  //Convierte la lista de ids en una lista de con los nombres de los generos correspondientes
+  const obtenerNombresGeneros = (ids) => {
     return ids
       .map((id) => {
-        const genre = genres.find((g) => g.id === id);
-        return genre ? genre.name : "";
+        const genero = generos.find((g) => g.id === id);
+        return genero ? genero.name : "";
       })
       .join(", ");
   };
 
-  const memorizedGenreNames = useMemo(
-    () => getGenreNames(genreIds),
-    [genres, genreIds]
+  //Utilizamos memo para evitar recalcular los generos
+  const nombresGenerosMemorizados = useMemo(
+    () => obtenerNombresGeneros(genreIds),
+    [generos, genreIds]
   );
 
   if (!show) {
@@ -51,6 +68,7 @@ const Modal = ({
       </span>
       <div className="modal-content">
         <div className="trailer-container">
+          {/* Muestra un iframe con el trailer cargado  */}
           {trailer && (
             <iframe
               src={trailer}
@@ -62,12 +80,15 @@ const Modal = ({
           )}
         </div>
         <h2>{title}</h2>
+        {/* Muestra la sinopsis */}
         <p>Sinopsis: {overview}</p>
-        <p>Géneros: {memorizedGenreNames}</p>
+        {/* Muestra los generos de la pelicula */}
+        <p>Géneros: {nombresGenerosMemorizados}</p>
         {cast && (
           <>
             <h3>Actores Principales:</h3>
             <ul>
+              {/* Muestra los 5 actores principales y a quien caracterizan */}
               {cast.slice(0, 5).map((actor) => (
                 <li key={actor.cast_id}>
                   {actor.name} como {actor.character}
@@ -78,6 +99,7 @@ const Modal = ({
         )}
         {crew && (
           <>
+          {/* Muestra al director de la pelicula */}
             <h3>Directores:</h3>
             <ul>
               {crew

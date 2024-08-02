@@ -1,0 +1,22 @@
+.carrusel {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 10px 0;
+}
+
+.carrusel::-webkit-scrollbar {
+  display: none;
+}
+
+.titulo{
+    padding-left: 30px;
+    font-size: 1.5rem;
+}
+
+.card {
+  flex: 0 0 auto;
+  margin-right: 15px;
+}
+
+

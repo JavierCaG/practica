@@ -9,6 +9,9 @@ body.no-scroll {
   scroll-behavior: smooth;
   padding: 20px 0;
 }
+.carrusel-track::-webkit-scrollbar {
+  display: none;
+}
 
 .popular {
   position: absolute;

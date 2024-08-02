@@ -3,7 +3,7 @@ import axios from "axios";
 export const API_KEY = "3fb38b786d562386d9dc4180a1efe6c4";
 export const BASE_URL = "https://api.themoviedb.org/3";
 
-export const fetchPelisPopulares = async () => {
+export const obtenerPeliculasPopulares = async () => {
   try {
     const response = await axios.get(`${BASE_URL}/movie/popular`, {
       params: {
@@ -18,7 +18,18 @@ export const fetchPelisPopulares = async () => {
   }
 };
 
-export const fetchSeriesPopulares = async () => {
+export const obtenerPeliculasPorGenero = async (genreId) => {
+  const response = await axios.get(`${BASE_URL}/discover/movie`, {
+    params: {
+      api_key: API_KEY,
+      with_genres: genreId,
+      language: "es-ES",
+    },
+  });
+  return response.data.results;
+};
+
+export const obtenerSeriesPopulares = async () => {
   try {
     const response = await axios.get(`${BASE_URL}/tv/popular`, {
       params: {
@@ -49,7 +60,7 @@ export const realizarBusqueda = async (query) => {
   }
 };
 
-export const fetchGenres = async (type) => {
+export const obtenerGeneros = async (type) => {
   const response = await axios.get(`${BASE_URL}/genre/${type}/list`, {
     params: {
       api_key: API_KEY,
@@ -59,7 +70,7 @@ export const fetchGenres = async (type) => {
   return response.data.genres;
 };
 
-export const fetchTrailer = async (id, type) => {
+export const obtenerTrailer = async (id, type) => {
   try {
     const response = await axios.get(`${BASE_URL}/${type}/${id}/videos`, {
       params: {
@@ -79,7 +90,7 @@ export const fetchTrailer = async (id, type) => {
   }
 };
 
-export const fetchCredits = async (id, type) => {
+export const obtenerCreditos = async (id, type) => {
   const response = await axios.get(`${BASE_URL}/${type}/${id}/credits`, {
     params: {
       api_key: API_KEY,

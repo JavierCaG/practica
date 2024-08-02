@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { fetchTrailer, fetchCredits } from "../api";
+import { obtenerTrailer, obtenerCreditos } from "../api"; // Nombres actualizados
 import Modal from "./Modal";
 import "./Carrusel.css";
 
@@ -10,6 +10,7 @@ const Carrusel = ({ tipo, items }) => {
   const [credits, setCredits] = useState({});
   const carouselTrackRef = useRef(null);
 
+  // Efecto para cargar la API de YouTube cuando se monta el componente
   useEffect(() => {
     const tag = document.createElement("script");
     tag.src = "https://www.youtube.com/iframe_api";
@@ -17,21 +18,25 @@ const Carrusel = ({ tipo, items }) => {
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
   }, []);
 
+// Maneja el evento de ratón al entrar en una tarjeta
   const handleMouseEnter = async (id, index) => {
     setHoveredCard(id);
     if (!trailers[id]) {
-      const trailerUrl = await fetchTrailer(
+      // Cargar trailer si no está ya almacenado
+      const trailerUrl = await obtenerTrailer(
         id,
         tipo === "peliculas" ? "movie" : "tv"
       );
       setTrailers((prevState) => ({ ...prevState, [id]: trailerUrl }));
     }
 
+    // Obtener elementos de DOM para ajustar el desplazamiento del carrusel
     const track = carouselTrackRef.current;
     const card = track.children[index];
     const cardRect = card.getBoundingClientRect();
     const trackRect = track.getBoundingClientRect();
 
+    // Ajustar desplazamiento si la tarjeta está fuera de vista
     if (cardRect.right > trackRect.right) {
       track.scrollLeft += cardRect.right - trackRect.right + 20;
     } else if (cardRect.left < trackRect.left) {
@@ -43,20 +48,23 @@ const Carrusel = ({ tipo, items }) => {
     setHoveredCard(null);
   };
 
+  // Maneja el evento de clic en una tarjeta
   const handleCardClick = async (item) => {
     setSelectedCard(item);
-    const creditData = await fetchCredits(
+    const creditData = await obtenerCreditos(
       item.id,
       tipo === "peliculas" ? "movie" : "tv"
     );
     setCredits(creditData);
   };
 
+  // Maneja el cierre del modal
   const handleCloseModal = () => {
     setSelectedCard(null);
     setCredits({});
   };
 
+  // Maneja el desplazamiento del carrusel en la dirección indicada
   const handleScroll = (direction) => {
     const track = carouselTrackRef.current;
     const cardWidth = track.children[0].getBoundingClientRect().width;
@@ -76,6 +84,7 @@ const Carrusel = ({ tipo, items }) => {
         {"<"}
       </button>
       <div className="carousel-track" ref={carouselTrackRef}>
+        {/* Iterar sobre los elementos para crear tarjetas */}
         {items.map((item, index) => {
           return (
             <div
@@ -101,9 +110,10 @@ const Carrusel = ({ tipo, items }) => {
       >
         {">"}
       </button>
-
+{/* Modal para mostrar detalles del elemento seleccionado */}
       {selectedCard && (
         <Modal
+        
           show={selectedCard !== null}
           onClose={handleCloseModal}
           trailer={trailers[selectedCard.id]}
