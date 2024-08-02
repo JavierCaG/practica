@@ -1,3 +1,4 @@
+PelisFilms
 Este proyecto es una pagina web, en el cual se pueden realizar busquedas, visualizacion de trailers, actores, generos, directores.
 Esta pagina cuenta con 3 apartados:
 Apartado principal: Visualizacion de series y peliculas mas populares, ordenadas por popularidad, Header con los 2 apartados y barra buscadora, footer, los elementos estan dispuestos en cards las cuales estan dentro de un carrusel, estas se pueden clickear y se desplegara un modal con toda la informacion de esta.
